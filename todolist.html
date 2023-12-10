@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gerenciador de Listas de Tarefas</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap');
+
+        body {
+          background-color: #111111; 
+          color: #ffffff; 
+          display: flex;
+          justify-content: center;
+        }
+      
+        h1 {
+          font-size: 36px; 
+          margin: 0; 
+          font-family: playfair display, serif;
+        }
+   
+        input {
+        border: none; 
+        background-color: #222222; 
+        color: #ffffff; 
+        padding: 5px; 
+        border-radius: 5px; 
+        box-shadow: inset 0 0 5px #333333; 
+        outline: none;
+        }
+
+        input:focus {
+        box-shadow: inset 0 0 10px #444444; 
+        }
+
+        li{
+          margin-bottom: 15px;
+        }
+
+        button {
+        border: none; 
+        background-color: #444444; 
+        color: #ffffff; 
+        padding: 10px 20px; 
+        cursor: pointer; 
+        border-radius: 10px; 
+        margin-left: 15px;
+        box-shadow: 0 0 10px #222222; 
+        transition: all 0.3s; 
+        }
+
+        button:hover {
+        transform: scale(1.1); 
+        background-color: #555555; 
+        box-shadow: 0 0 20px #222222; 
+        }
+
+        button:active {
+        transform: scale(0.9); 
+        background-color: #333333; 
+        box-shadow: inset 0 0 10px #222222; 
+        }
+          
+        .done {
+          text-decoration: line-through; 
+          color: #aaaaaa; 
+        }
+        
+        @media screen and (max-width: 768px) {
+  
+          main {
+            grid-template-columns: 1fr; 
+          }
+        }
+</style>
+</head>
+<body><div>
+    <h1>Gerenciador de Listas de Tarefas</h1>
+    <input id="listNameInput" type="text" placeholder="Nome da nova lista">
+    <button onclick="addList()">Adicionar Lista</button>
+    <div id="lists"></div>
+</div>
+    <script>
+        function addList() {
+            var listNameInput = document.getElementById('listNameInput');
+            var lists = document.getElementById('lists');
+
+            var newList = document.createElement('div');
+            newList.innerHTML = '<h2>' + listNameInput.value + '</h2><input class="taskInput" type="text" placeholder="Nova tarefa"><button onclick="addTask(this)">Adicionar</button><ul class="taskList"></ul><button onclick="removeList(this)">Remover Lista</button>';
+
+            lists.appendChild(newList);
+
+            listNameInput.value = '';
+        }
+
+        function addTask(button) {
+            var taskInput = button.previousSibling;
+            var taskList = button.nextSibling;
+
+            var newTask = document.createElement('li');
+            newTask.innerText = taskInput.value;
+            newTask.onclick = function() {
+                this.classList.toggle('done');
+            }
+
+            var removeButton = document.createElement('button');
+            removeButton.innerText = 'Remover';
+            removeButton.onclick = function() {
+                taskList.removeChild(newTask);
+            }
+
+            newTask.appendChild(removeButton);
+            taskList.appendChild(newTask);
+
+            taskInput.value = '';
+        }
+
+        function removeList(button) {
+            var list = button.parentNode;
+            list.parentNode.removeChild(list);
+        }
+    </script>
+</body>
+</html>
